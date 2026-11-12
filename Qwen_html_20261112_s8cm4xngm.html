@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Кутузов и Бородино — 1812</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f4ecd8;
+    --bg-dark: #e8dcc0;
+    --ink: #2b1d0e;
+    --ink-soft: #5a4630;
+    --accent: #8b2e2e;
+    --gold: #b8860b;
+    --line: #c9b88a;
+  }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 17px;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+  /* Шапка */
+  header {
+    background: linear-gradient(180deg, #3a2a18 0%, #5a4028 100%);
+    color: var(--bg);
+    padding: 40px 0 30px;
+    border-bottom: 4px double var(--gold);
+  }
+  header h1 {
+    font-size: 2.4em;
+    text-align: center;
+    letter-spacing: 2px;
+    font-variant: small-caps;
+  }
+  header .sub {
+    text-align: center;
+    color: var(--gold);
+    margin-top: 8px;
+    font-style: italic;
+  }
+  nav.toc {
+    background: var(--bg-dark);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  nav.toc ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 20px;
+  }
+  nav.toc a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.95em;
+    padding: 4px 8px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s;
+  }
+  nav.toc a:hover { border-color: var(--accent); }
+
+  /* Секции */
+  section {
+    padding: 50px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  section h2 {
+    font-size: 1.8em;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-variant: small-caps;
+    letter-spacing: 1px;
+  }
+  section h2 .num {
+    color: var(--gold);
+    font-size: 0.7em;
+    margin-right: 10px;
+    font-style: italic;
+  }
+  section .lead {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 25px;
+    font-size: 1.1em;
+    border-left: 3px solid var(--gold);
+    padding-left: 15px;
+  }
+  p { margin-bottom: 15px; }
+
+  /* Ключевые цифры */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+  }
+  .stat {
+    background: var(--bg-dark);
+    padding: 20px;
+    text-align: center;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .stat .num {
+    font-size: 2em;
+    color: var(--accent);
+    font-weight: bold;
+    display: block;
+  }
+  .stat .lbl {
+    font-size: 0.9em;
+    color: var(--ink-soft);
+  }
+
+  /* Цитаты */
+  blockquote {
+    background: var(--bg-dark);
+    border-left: 4px solid var(--accent);
+    padding: 15px 20px;
+    margin: 20px 0;
+    font-style: italic;
+    position: relative;
+  }
+  blockquote cite {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: var(--ink-soft);
+    font-style: normal;
+  }
+
+  /* Досье */
+  .dossier {
+    background: var(--bg-dark);
+    padding: 20px;
+    border: 2px solid var(--gold);
+    margin: 25px 0;
+  }
+  .dossier dt {
+    font-weight: bold;
+    color: var(--accent);
+    float: left;
+    clear: left;
+    width: 140px;
+  }
+  .dossier dd { margin-left: 150px; margin-bottom: 8px; }
+
+  /* Хроника */
+  .timeline { margin: 25px 0; }
+  .tl-item {
+    border: 1px solid var(--line);
+    margin-bottom: 8px;
+    background: #fff8e8;
+  }
+  .tl-head {
+    padding: 12px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    user-select: none;
+  }
+  .tl-head:hover { background: var(--bg-dark); }
+  .tl-head .year {
+    color: var(--accent);
+    font-size: 1.1em;
+    min-width: 100px;
+  }
+  .tl-head .toggle { color: var(--gold); font-size: 1.3em; }
+  .tl-body {
+    display: none;
+    padding: 0 15px 15px;
+    color: var(--ink-soft);
+    border-top: 1px dashed var(--line);
+  }
+  .tl-item.open .tl-body { display: block; padding-top: 15px; }
+  .tl-item.open .toggle { transform: rotate(45deg); }
+
+  /* Силы сторон */
+  .forces {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 25px 0;
+  }
+  .force-card {
+    padding: 20px;
+    border: 2px solid var(--line);
+    background: #fff8e8;
+  }
+  .force-card.ru { border-color: var(--accent); }
+  .force-card.fr { border-color: #2c3e50; }
+  .force-card h4 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Карта сражения */
+  .map-wrap {
+    background: #fff8e8;
+    padding: 15px;
+    border: 2px solid var(--gold);
+    margin: 25px 0;
+  }
+  .map-svg { width: 100%; height: auto; display: block; }
+  .map-point {
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .map-point:hover circle { fill: var(--accent); }
+  .map-info {
+    margin-top: 15px;
+    padding: 15px;
+    background: var(--bg-dark);
+    min-height: 60px;
+    border-left: 3px solid var(--accent);
+  }
+  .map-info h4 { color: var(--accent); margin-bottom: 5px; }
+
+  /* Эпизоды сражения */
+  .episodes { margin: 25px 0; }
+  .ep-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+  .ep-tab {
+    padding: 10px 18px;
+    background: var(--bg-dark);
+    border: 1px solid var(--line);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95em;
+    color: var(--ink);
+  }
+  .ep-tab.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .ep-body {
+    display: none;
+    padding: 20px;
+    background: #fff8e8;
+    border-left: 4px solid var(--gold);
+  }
+  .ep-body.active { display: block; }
+  .ep-body h4 { color: var(--accent); margin-bottom: 10px; }
+
+  /* Решения */
+  .decision {
+    background: #fff8e8;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid var(--line);
+  }
+  .decision h4 { color: var(--accent); margin-bottom: 10px; }
+  .opinions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 15px 0;
+  }
+  .opinion {
+    padding: 12px;
+    border-left: 3px solid var(--line);
+    background: var(--bg-dark);
+  }
+  .opinion.pro { border-color: #2e7d32; }
+  .opinion.con { border-color: #c62828; }
+  .opinion strong { display: block; margin-bottom: 5px; }
+
+  /* Оценки - вкладки */
+  .voices-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--line);
+  }
+  .voice-tab {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1em;
+    color: var(--ink-soft);
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+  .voice-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: bold;
+  }
+  .voice-panel { display: none; }
+  .voice-panel.active { display: block; }
+  .voice-card {
+    padding: 15px;
+    background: #fff8e8;
+    margin-bottom: 12px;
+    border-left: 3px solid var(--gold);
+  }
+  .voice-card .author {
+    color: var(--accent);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  /* Словарь */
+  .search-box {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    font-family: inherit;
+    border: 2px solid var(--line);
+    background: #fff8e8;
+    margin-bottom: 20px;
+  }
+  .search-box:focus { outline: none; border-color: var(--accent); }
+  .dict-list { display: grid; gap: 10px; }
+  .dict-item {
+    padding: 12px 15px;
+    background: #fff8e8;
+    border-left: 3px solid var(--gold);
+  }
+  .dict-item dt {
+    font-weight: bold;
+    color: var(--accent);
+    display: inline;
+  }
+  .dict-item dd {
+    display: inline;
+    margin-left: 5px;
+  }
+
+  /* Викторина */
+  .quiz-q {
+    background: #fff8e8;
+    padding: 18px;
+    margin-bottom: 15px;
+    border: 1px solid var(--line);
+  }
+  .quiz-q h4 {
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .quiz-q label {
+    display: block;
+    padding: 8px 12px;
+    margin: 5px 0;
+    background: var(--bg-dark);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .quiz-q label:hover { background: #e8dcc0; }
+  .quiz-q input[type="radio"] { margin-right: 8px; }
+  .quiz-q.correct label { border-color: #2e7d32; }
+  .quiz-q.wrong label { border-color: #c62828; }
+  .quiz-feedback {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 12px 24px;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1em;
+    letter-spacing: 1px;
+  }
+  .btn:hover { background: #6b1e1e; }
+  .btn.secondary { background: var(--ink-soft); }
+  .quiz-score {
+    padding: 15px;
+    background: var(--bg-dark);
+    border: 2px solid var(--gold);
+    margin-top: 15px;
+    text-align: center;
+    font-size: 1.1em;
+    display: none;
+  }
+  .quiz-score.show { display: block; }
+
+  /* Память */
+  .memory-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 25px 0;
+  }
+  .mem-item {
+    padding: 15px;
+    background: #fff8e8;
+    border-top: 3px solid var(--gold);
+  }
+  .mem-item .year {
+    font-size: 1.5em;
+    color: var(--accent);
+    font-weight: bold;
+  }
+
+  /* SVG иллюстрации */
+  .illustration {
+    text-align: center;
+    margin: 25px 0;
+    padding: 15px;
+    background: var(--bg-dark);
+    border: 1px solid var(--line);
+  }
+  .illustration svg { max-width: 100%; height: auto; }
+  .illustration .caption {
+    font-size: 0.85em;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 10px;
+  }
+
+  /* Футер */
+  footer {
+    background: #3a2a18;
+    color: var(--bg);
+    padding: 30px 0;
+    margin-top: 40px;
+  }
+  footer h3 { color: var(--gold); margin-bottom: 10px; }
+  footer ul { list-style: none; }
+  footer li { margin-bottom: 5px; font-size: 0.9em; }
+  footer a { color: var(--gold); }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 20px;
+  }
+  .copyright {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #5a4028;
+    font-size: 0.85em;
+    color: var(--gold);
+  }
+
+  /* Адаптив */
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.6em; }
+    .forces, .opinions, .footer-grid { grid-template-columns: 1fr; }
+    .dossier dt { float: none; width: auto; }
+    .dossier dd { margin-left: 0; }
+  }
+
+  @media print {
+    nav.toc { position: static; }
+    .btn, .quiz-actions { display: none; }
+    section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<a id="top"></a>
+
+<header>
+  <div class="container">
+    <h1>Кутузов · Бородино · 1812</h1>
+    <div class="sub">Стратегия, которая сохранила армию и выиграла кампанию</div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="container">
+    <ul>
+      <li><a href="#bio">Полководец</a></li>
+      <li><a href="#borodino">Бородино</a></li>
+      <li><a href="#decisions">Решения</a></li>
+      <li><a href="#voices">Оценки</a></li>
+      <li><a href="#memory">Память</a></li>
+      <li><a href="#glossary">Словарь</a></li>
+      <li><a href="#quiz">Викторина</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ВСТУПЛЕНИЕ -->
+<section id="intro">
+  <p class="lead">Как сохранить армию, оставить столицу и всё равно победить? Пройдите через биографию полководца, поле Бородина и самые тяжёлые решения 1812 года — на карте, в хронике и в викторине.</p>
+
+  <div class="hero-stats">
+    <div class="stat"><span class="num">26 авг / 7 сент</span><span class="lbl">Бородинское сражение · 1812</span></div>
+    <div class="stat"><span class="num">≈130 тыс.</span><span class="lbl">солдат с каждой стороны</span></div>
+    <div class="stat"><span class="num">624–640</span><span class="lbl">орудий русской артиллерии</span></div>
+    <div class="stat"><span class="num">8 раз</span><span class="lbl">флеши переходили из рук в руки</span></div>
+  </div>
+</section>
+
+<!-- 01 ПОЛКОВОДЕЦ -->
+<section id="bio">
+  <h2><span class="num">01 ·</span>Полководец</h2>
+  <p class="lead">Человек, который берёг армию. От преподавателя математики до первого полного георгиевского кавалера — путь, где война была наукой, а солдат не был расходным материалом.</p>
+
+  <p>Михаил Илларионович Кутузов родился 5 (16) сентября 1745 года в Москве в семье военного инженера. Окончив Артиллерийскую и инженерную дворянскую школу, он был оставлен при ней преподавателем математики — редкая честь для выпускника.</p>
+
+  <p>Настоящей школой войны стала русско-турецкая война 1768–1774 годов: Рябая Могила, Ларга, Кагул. При штурме Алушты в 1774 году он получил тяжелейшее ранение: пуля вошла в левый висок и вышла у правого глаза. Врачи считали рану смертельной, но Кутузов выжил и вернулся в строй.</p>
+
+  <p>Под началом А. В. Суворова он перенял главное: беречь солдата, отказываться от шаблона, требовать инициативы. Дипломатическая служба и Бухарестский мир 1812 года добавили к боевому опыту умение выигрывать войну не только на поле.</p>
+
+  <blockquote>
+    «Умён, умён! Хитёр, хитёр! Никто его не обманет».
+    <cite>— А. В. Суворов о Кутузове после Измаила</cite>
+  </blockquote>
+
+  <dl class="dossier">
+    <dt>Годы жизни:</dt><dd>1745–1813</dd>
+    <dt>Чин:</dt><dd>генерал-фельдмаршал</dd>
+    <dt>Титул:</dt><dd>князь Смоленский</dd>
+    <dt>Ранения:</dt><dd>два тяжёлых ранения в голову</dd>
+    <dt>Дипломатия:</dt><dd>Бухарестский мир 1812 года</dd>
+    <dt>Назначение:</dt><dd>8 (20) августа 1812 — главнокомандующий</dd>
+  </dl>
+
+  <h3 style="color:var(--accent);margin:20px 0 10px;">Хроника жизни</h3>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-head"><span class="year">1745</span><span>Рождение в Москве</span><span class="toggle">+</span></div>
+      <div class="tl-body">5 (16) сентября в семье дворянина, военного инженера Иллариона Голенищева-Кутузова.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-head"><span class="year">1759–1761</span><span>Начало службы и школа</span><span class="toggle">+</span></div>
+      <div class="tl-body">Служба рядовым, Артиллерийская и инженерная дворянская школа, преподаватель математики, первый офицерский чин.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-head"><span class="year">1770–1774</span><span>Школа Румянцева</span><span class="toggle">+</span></div>
+      <div class="tl-body">Русско-турецкая война: Рябая Могила, Ларга, Кагул; чин премьер-майора за отличие. Ранение при Алуште.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-head"><span class="year">1787–1790</span><span>Кинбурн и Измаил</span><span class="toggle">+</span></div>
+      <div class="tl-body">Второе ранение в голову — и снова возвращение в строй. При штурме Измаила лично повёл колонну на бастион; Суворов назвал его «правою рукою».</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-head"><span class="year">1805</span><span>Отход и Аустерлиц</span><span class="toggle">+</span></div>
+      <div class="tl-body">Отход от Браунау к Ольмюцу, Шёнграбен Багратиона, орден Св. Георгия 2-й степени. Горький урок Аустерлица: навязанное сражение губит армию.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-head"><span class="year">1811–1812</span><span>Молдавская армия и мир</span><span class="toggle">+</span></div>
+      <div class="tl-body">Победа под Рущуком, окружение противника под Слободзеей и Бухарестский мир 16 (28) мая 1812 года: Бессарабия в составе России, Турция вне союза с Францией.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-head"><span class="year">1812</span><span>Главнокомандующий и Бородино</span><span class="toggle">+</span></div>
+      <div class="tl-body">8 (20) августа утверждён главнокомандующим армиями и ополчениями. 26 августа — Бородинское сражение. 1 сентября — совет в Филях. Сентябрь–октябрь — Тарутинский манёвр.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-head"><span class="year">1813</span><span>Бунцлау</span><span class="toggle">+</span></div>
+      <div class="tl-body">16 апреля скончался во главе русско-прусских союзных войск. Погребён в Казанском соборе Петербурга.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 СРАЖЕНИЕ -->
+<section id="borodino">
+  <h2><span class="num">02 ·</span>Сражение</h2>
+  <p class="lead">Поле, где решалось больше, чем битва. 12 (24) июня 1812 года армия Наполеона переправилась через Неман. План молниеносной войны сорвался: русские армии отходом сохранили силы, а общество потребовало сражения.</p>
+
+  <div class="forces">
+    <div class="force-card ru">
+      <h4>Русская армия</h4>
+      <p><strong>Численность:</strong> 120–135 тыс.</p>
+      <p><strong>Артиллерия:</strong> 624–640 орудий</p>
+    </div>
+    <div class="force-card fr">
+      <h4>Армия Наполеона</h4>
+      <p><strong>Численность:</strong> 130–135 тыс.</p>
+      <p><strong>Артиллерия:</strong> 587 орудий</p>
+    </div>
+  </div>
+
+  <h3 style="color:var(--accent);margin:25px 0 10px;">Карта сражения</h3>
+  <div class="map-wrap">
+    <svg class="map-svg" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+      <!-- Фон -->
+      <rect width="800" height="500" fill="#f4ecd8"/>
+      <!-- Реки -->
+      <path d="M 50 100 Q 200 150 400 200 T 750 250" stroke="#5b8fb9" stroke-width="6" fill="none"/>
+      <text x="100" y="90" fill="#5b8fb9" font-size="14" font-style="italic">р. Колоча</text>
+      <path d="M 600 50 Q 650 200 700 450" stroke="#5b8fb9" stroke-width="6" fill="none"/>
+      <text x="710" y="200" fill="#5b8fb9" font-size="14" font-style="italic">р. Москва</text>
+      <!-- Дорога -->
+      <path d="M 50 350 L 750 400" stroke="#8b6f47" stroke-width="4" stroke-dasharray="8,4" fill="none"/>
+      <text x="350" y="430" fill="#8b6f47" font-size="13">Старая Смоленская дорога</text>
+
+      <!-- Французские войска (синие блоки) -->
+      <rect x="80" y="250" width="80" height="40" fill="#2c3e50" opacity="0.7"/>
+      <text x="90" y="275" fill="white" font-size="11">Даву, Ney</text>
+      <rect x="80" y="300" width="80" height="40" fill="#2c3e50" opacity="0.7"/>
+      <text x="95" y="325" fill="white" font-size="11">Мюрат</text>
+      <rect x="80" y="350" width="80" height="40" fill="#2c3e50" opacity="0.7"/>
+      <text x="95" y="375" fill="white" font-size="11">Жюно</text>
+      <rect x="80" y="400" width="80" height="40" fill="#1a1a1a" opacity="0.8"/>
+      <text x="95" y="425" fill="white" font-size="11">Гвардия</text>
+
+      <!-- Русские войска (красные блоки) -->
+      <rect x="500" y="150" width="100" height="40" fill="#8b2e2e" opacity="0.8"/>
+      <text x="510" y="175" fill="white" font-size="11">1-я армия</text>
+      <rect x="500" y="300" width="100" height="40" fill="#8b2e2e" opacity="0.8"/>
+      <text x="510" y="325" fill="white" font-size="11">2-я армия</text>
+      <rect x="650" y="250" width="100" height="40" fill="#8b2e2e" opacity="0.8"/>
+      <text x="660" y="275" fill="white" font-size="11">Резервы</text>
+
+      <!-- Укрепления (жёлтые) -->
+      <polygon points="380,320 420,300 420,340" fill="#b8860b" stroke="#5a4028" stroke-width="2"/>
+      <polygon points="350,370 390,350 390,390" fill="#b8860b" stroke="#5a4028" stroke-width="2"/>
+      <circle cx="480" cy="240" r="15" fill="#b8860b" stroke="#5a4028" stroke-width="2"/>
+      <text x="465" y="220" fill="#5a4028" font-size="11">Кург. батар.</text>
+
+      <!-- Сёла -->
+      <rect x="620" y="100" width="60" height="25" fill="#d4a574" stroke="#5a4028"/>
+      <text x="625" y="118" fill="#2b1d0e" font-size="11">Бородино</text>
+      <rect x="430" y="400" width="70" height="25" fill="#d4a574" stroke="#5a4028"/>
+      <text x="435" y="418" fill="#2b1d0e" font-size="11">Семёновск.</text>
+      <rect x="580" y="400" width="50" height="25" fill="#d4a574" stroke="#5a4028"/>
+      <text x="585" y="418" fill="#2b1d0e" font-size="11">Утицы</text>
+      <rect x="680" y="150" width="50" height="25" fill="#d4a574" stroke="#5a4028"/>
+      <text x="685" y="168" fill="#2b1d0e" font-size="11">Горки</text>
+      <rect x="250" y="200" width="70" height="25" fill="#d4a574" stroke="#5a4028"/>
+      <text x="255" y="218" fill="#2b1d0e" font-size="11">Шевардино</text>
+
+      <!-- Точки -->
+      <g class="map-point" data-id="1">
+        <circle cx="285" cy="212" r="10" fill="#8b2e2e" stroke="white" stroke-width="2"/>
+        <text x="281" y="217" fill="white" font-size="12" font-weight="bold">1</text>
+      </g>
+      <g class="map-point" data-id="2">
+        <circle cx="370" cy="340" r="10" fill="#8b2e2e" stroke="white" stroke-width="2"/>
+        <text x="366" y="345" fill="white" font-size="12" font-weight="bold">2</text>
+      </g>
+      <g class="map-point" data-id="3">
+        <circle cx="480" cy="240" r="10" fill="#8b2e2e" stroke="white" stroke-width="2"/>
+        <text x="476" y="245" fill="white" font-size="12" font-weight="bold">3</text>
+      </g>
+      <g class="map-point" data-id="4">
+        <circle cx="650" cy="112" r="10" fill="#8b2e2e" stroke="white" stroke-width="2"/>
+        <text x="646" y="117" fill="white" font-size="12" font-weight="bold">4</text>
+      </g>
+      <g class="map-point" data-id="5">
+        <circle cx="605" cy="412" r="10" fill="#8b2e2e" stroke="white" stroke-width="2"/>
+        <text x="601" y="417" fill="white" font-size="12" font-weight="bold">5</text>
+      </g>
+      <g class="map-point" data-id="6">
+        <circle cx="700" cy="270" r="10" fill="#8b2e2e" stroke="white" stroke-width="2"/>
+        <text x="696" y="275" fill="white" font-size="12" font-weight="bold">6</text>
+      </g>
+      <g class="map-point" data-id="7">
+        <circle cx="730" cy="180" r="10" fill="#8b2e2e" stroke="white" stroke-width="2"/>
+        <text x="726" y="185" fill="white" font-size="12" font-weight="bold">7</text>
+      </g>
+
+      <!-- Легенда -->
+      <rect x="20" y="450" width="15" height="15" fill="#8b2e2e"/>
+      <text x="40" y="462" font-size="12">Русские войска</text>
+      <rect x="160" y="450" width="15" height="15" fill="#2c3e50"/>
+      <text x="180" y="462" font-size="12">Французские войска</text>
+      <rect x="320" y="450" width="15" height="15" fill="#b8860b"/>
+      <text x="340" y="462" font-size="12">Укрепления</text>
+    </svg>
+    <div class="map-info" id="mapInfo">
+      <h4>Нажмите на точку на карте</h4>
+      <p>Исследуйте ключевые пункты Бородинского сражения: Шевардинский редут, Багратионовы флеши, батарею Раевского и другие позиции.</p>
+    </div>
+  </div>
+
+  <h3 style="color:var(--accent);margin:25px 0 10px;">Ход сражения: пять эпизодов одного дня</h3>
+  <div class="episodes">
+    <div class="ep-tabs">
+      <button class="ep-tab active" data-ep="1">Утро</button>
+      <button class="ep-tab" data-ep="2">Флеши</button>
+      <button class="ep-tab" data-ep="3">Рейд кавалерии</button>
+      <button class="ep-tab" data-ep="4">Батарея</button>
+      <button class="ep-tab" data-ep="5">Вечер</button>
+    </div>
+    <div class="ep-body active" data-ep="1">
+      <h4>Около 6 часов утра</h4>
+      <p>Корпуса Даву и Нея двинулись на Багратионовы флеши, которые обороняли дивизии Воронцова и Лихачёва. Главный удар Наполеон направил на левый фланг русской армии.</p>
+    </div>
+    <div class="ep-body" data-ep="2">
+      <h4>Борьба за флеши</h4>
+      <p>Укрепления восемь раз переходили из рук в руки; в контратаках пали генералы с обеих сторон, смертельно ранен Багратион. К полудню французы удержали разрушенные флеши, но за ними встала вторая линия обороны и артиллерия.</p>
+    </div>
+    <div class="ep-body" data-ep="3">
+      <h4>Рейд Уварова и Платова</h4>
+      <p>В критический момент Кутузов бросил кавалерию Уварова и казаков Платова во фланг и тыл противника. Вылазка на несколько часов задержала решающий штурм и заставила Наполеона перегруппировать силы.</p>
+    </div>
+    <div class="ep-body" data-ep="4">
+      <h4>Батарея Раевского</h4>
+      <p>Днём французы взяли Курганную батарею, но прорвать оборону не смогли: навстречу из глубины вышли свежие резервы. Наполеон так и не решился ввести в бой гвардию — последний резерв.</p>
+    </div>
+    <div class="ep-body" data-ep="5">
+      <h4>Вечер: армия не сломлена</h4>
+      <p>Французы заняли часть укреплений, но русская армия сохранила строй и боеспособность и в порядке отошла на новые позиции. Стратегическая цель Наполеона — уничтожить армию в генеральном сражении — не достигнута.</p>
+    </div>
+  </div>
+
+  <blockquote>
+    «Из всех моих сражений самое страшное то, которое я дал под Москвой. Французы показали себя достойными одержать победу, а русские стяжали право быть непобедимыми».
+    <cite>— Наполеон Бонапарт</cite>
+  </blockquote>
+
+  <p>Потери были огромны: русская армия — около 44–58 тысяч человек, французская — около 50–58 тысяч. Но цель Наполеона уничтожить русскую армию в генеральном сражении достигнута не была. По выражению А. П. Ермолова, французская армия «расшиблась о русскую армию».</p>
+</section>
+
+<!-- 03 РЕШЕНИЯ -->
+<section id="decisions">
+  <h2><span class="num">03 ·</span>Решения</h2>
+  <p class="lead">Три решения одной стратегии: Бородино, оставление Москвы и Тарутинский манёвр — связанные звенья плана сохранить армию и измотать противника.</p>
+
+  <div class="decision">
+    <h4>1 (13) сентября 1812 · Военный совет в Филях</h4>
+    <p>После Бородина армия потеряла до трети состава. Позиция на Воробьёвых горах простреливалась и обходилась с флангов. Вопрос встал ребром — жертвовать армией ради столицы или столицей ради армии.</p>
+
+    <div class="opinions">
+      <div class="opinion pro">
+        <strong>Л. Л. Беннигсен и сторонники боя</strong>
+        Настаивали на новом генеральном сражении под стенами Москвы: отдать древнюю столицу без боя — значит обесчестить армию и страну.
+      </div>
+      <div class="opinion con">
+        <strong>М. Б. Барклай-де-Толли</strong>
+        Предлагал оставить Москву ради сохранения армии: войска после Бородина не выдержат нового удара, а гибель армии означала бы гибель России.
+      </div>
+    </div>
+
+    <blockquote>
+      «С потерей Москвы ещё не потеряна Россия. Но коль уничтожится армия, погибнут и Москва и Россия».
+      <cite>— М. И. Кутузов, военный совет в Филях</cite>
+    </blockquote>
+
+    <p>2 (14) сентября русская армия вышла из Москвы; в тот же день древняя столица загорелась. Общество восприняло решение как унижение, Кутузова обвиняли в предательстве. Но расчёт оказался верен: Наполеон трижды предлагал мир и не получил ответа, а его армия в горящей пустой столице начала разлагаться.</p>
+  </div>
+
+  <h3 style="color:var(--accent);margin:25px 0 10px;">Тарутинский манёвр: армия исчезла</h3>
+  <div class="map-wrap">
+    <svg class="map-svg" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="400" fill="#f4ecd8"/>
+      <!-- Москва -->
+      <circle cx="400" cy="150" r="25" fill="#8b2e2e" stroke="#2b1d0e" stroke-width="2"/>
+      <text x="370" y="155" fill="white" font-weight="bold" font-size="14">МОСКВА</text>
+      <text x="365" y="195" fill="#5a4028" font-size="11">2 сентября</text>
+
+      <!-- Тарутино -->
+      <circle cx="250" cy="320" r="22" fill="#2e7d32" stroke="#2b1d0e" stroke-width="2"/>
+      <text x="215" y="325" fill="white" font-weight="bold" font-size="13">ТАРУТИНО</text>
+      <text x="215" y="355" fill="#5a4028" font-size="11">20 сентября</text>
+
+      <!-- Рязанская дорога (ложный след) -->
+      <path d="M 400 150 Q 550 200 700 300" stroke="#c62828" stroke-width="3" stroke-dasharray="8,6" fill="none"/>
+      <text x="550" y="180" fill="#c62828" font-size="12" font-style="italic">Рязанская дорога</text>
+      <text x="550" y="195" fill="#c62828" font-size="10">(ложный след)</text>
+
+      <!-- Старая Калужская дорога (истинный путь) -->
+      <path d="M 400 150 Q 300 220 250 320" stroke="#2e7d32" stroke-width="4" fill="none"/>
+      <text x="280" y="230" fill="#2e7d32" font-size="12" font-weight="bold">Старая Калужская дорога</text>
+
+      <!-- Этапы -->
+      <circle cx="420" cy="170" r="6" fill="#b8860b"/>
+      <text x="435" y="175" font-size="11" fill="#5a4028">1. Отрыв</text>
+      <circle cx="350" cy="230" r="6" fill="#b8860b"/>
+      <text x="365" y="235" font-size="11" fill="#5a4028">2. Переход</text>
+      <circle cx="280" cy="290" r="6" fill="#b8860b"/>
+      <text x="295" y="295" font-size="11" fill="#5a4028">3. Лагерь</text>
+      <circle cx="200" cy="350" r="6" fill="#b8860b"/>
+      <text x="100" y="355" font-size="11" fill="#5a4028">4. Удар 6 (18) октября</text>
+
+      <!-- Милорадович -->
+      <circle cx="600" cy="250" r="15" fill="#5a4028" opacity="0.6"/>
+      <text x="560" y="255" fill="white" font-size="10">Милорадович</text>
+    </svg>
+    <p style="margin-top:10px;font-size:0.9em;color:var(--ink-soft);">
+      <strong style="color:#c62828;">— — —</strong> демонстративное движение · 
+      <strong style="color:#2e7d32;">——</strong> скрытный переход армии
+    </p>
+  </div>
+
+  <h3 style="color:var(--accent);margin:25px 0 10px;">Партизанская война и контрнаступление</h3>
+  <p>Идея армейских партизанских отрядов принадлежала Д. В. Давыдову и была поддержана Кутузовым. Отряды Давыдова, Сеславина, Дорохова и Фигнера действовали вместе с крестьянами. Кутузов не бил «в лоб»: параллельное преследование, фланговые удары и измор.</p>
+
+  <ul style="margin:15px 0 15px 20px;">
+    <li><strong>6 (18) октября</strong> — Тарутинский бой, разбит авангард Мюрата.</li>
+    <li><strong>12 (24) октября</strong> — Малоярославец, французы не пущены в хлебные губернии.</li>
+    <li><strong>22 октября / 3 ноября</strong> — Вязьма, потеряны обозы.</li>
+    <li><strong>3–6 / 15–18 ноября</strong> — Красный, разгромлены отдельные корпуса.</li>
+    <li><strong>14–17 / 26–29 ноября</strong> — Березина, гибель остатков организованной армии.</li>
+    <li><strong>23 ноября / 5 декабря</strong> — Сморгонь, Наполеон бросает армию.</li>
+  </ul>
+</section>
+
+<!-- 04 ОЦЕНКИ -->
+<section id="voices">
+  <h2><span class="num">04 ·</span>Оценки</h2>
+  <p class="lead">Гений или осторожность? Переключайте вкладки: аргументы «за» и «против» собраны из трудов историков и воспоминаний современников.</p>
+
+  <div class="voices-tabs">
+    <button class="voice-tab active" data-voice="pro">Стратегический гений</button>
+    <button class="voice-tab" data-voice="con">Спорные страницы</button>
+  </div>
+
+  <div class="voice-panel active" data-voice="pro">
+    <div class="voice-card">
+      <span class="author">П. А. Жилин, историк</span>
+      Сохранение армии, оставление Москвы и Тарутинский манёвр были единственно верными решениями, приведшими к гибели наполеоновской армии в России.
+    </div>
+    <div class="voice-card">
+      <span class="author">Е. В. Тарле, академик</span>
+      Кутузов — выразитель народного характера войны: он понял, что война 1812 года национальная, и подчинил стратегию подъёму народных сил.
+    </div>
+    <div class="voice-card">
+      <span class="author">В. М. Безотосный, главный редактор энциклопедии</span>
+      Бородино не дало Наполеону решительной победы и стало началом перелома, завершённого стратегией Кутузова.
+    </div>
+    <div class="voice-card">
+      <span class="author">Карл фон Клаузевиц, прусский генерал</span>
+      Полководец, который «понимал, что есть нечто сильнее и значительнее его воли», и не мешал естественному ходу событий вести Россию к победе.
+    </div>
+  </div>
+
+  <div class="voice-panel" data-voice="con">
+    <div class="voice-card">
+      <span class="author">Н. А. Троицкий, историк</span>
+      Образ «спасителя Отечества» во многом создан официальной пропагандой и литературной традицией; медлительность и осторожность полководца спорны.
+    </div>
+    <div class="voice-card">
+      <span class="author">Современники</span>
+      Медлительность в начале кампании и несогласованность с императором давали основания для упрёков.
+    </div>
+    <div class="voice-card">
+      <span class="author">«Упущенная Березина»</span>
+      Излишняя осторожность в преследовании позволила части армии Наполеона переправиться через реку. Главная цель — изгнание — всё же достигнута.
+    </div>
+    <div class="voice-card">
+      <span class="author">Часть историографии</span>
+      Бородино называют и ничьей: поле осталось за Наполеоном, дорога на Москву открылась, а тактическое поражение лишь позднее переросло в стратегическую победу.
+    </div>
+  </div>
+
+  <blockquote>
+    <strong>Вывод проекта:</strong> упрёки справедливы в деталях, но войну выиграла не одна битва, а последовательность решений, подчинённых одной идее. Там, где Наполеон играл ва-банк, Кутузов играл на вероятность — и именно эта ставка оказалась верной.
+  </blockquote>
+</section>
+
+<!-- 05 ПАМЯТЬ -->
+<section id="memory">
+  <h2><span class="num">05 ·</span>Память</h2>
+  <p class="lead">Поле, которое помнит. Бородино стало нравственным фундаментом победы: моральная стойкость поля превратилась в победу стратегическую.</p>
+
+  <div class="illustration">
+    <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#d4a574"/>
+          <stop offset="100%" stop-color="#8b6f47"/>
+        </linearGradient>
+      </defs>
+      <rect width="600" height="200" fill="url(#sky)"/>
+      <!-- Силуэты солдат -->
+      <g fill="#2b1d0e">
+        <rect x="50" y="130" width="8" height="40"/>
+        <circle cx="54" cy="125" r="5"/>
+        <rect x="70" y="135" width="8" height="35"/>
+        <circle cx="74" cy="130" r="5"/>
+        <rect x="100" y="125" width="8" height="45"/>
+        <circle cx="104" cy="120" r="5"/>
+        <rect x="130" y="130" width="8" height="40"/>
+        <circle cx="134" cy="125" r="5"/>
+        <rect x="450" y="130" width="8" height="40"/>
+        <circle cx="454" cy="125" r="5"/>
+        <rect x="480" y="135" width="8" height="35"/>
+        <circle cx="484" cy="130" r="5"/>
+        <rect x="510" y="125" width="8" height="45"/>
+        <circle cx="514" cy="120" r="5"/>
+        <rect x="540" y="130" width="8" height="40"/>
+        <circle cx="544" cy="125" r="5"/>
+      </g>
+      <!-- Знамя -->
+      <rect x="295" y="80" width="3" height="90" fill="#2b1d0e"/>
+      <polygon points="298,85 340,95 340,115 298,105" fill="#8b2e2e"/>
+      <!-- Пушки -->
+      <ellipse cx="200" cy="165" rx="20" ry="6" fill="#2b1d0e"/>
+      <rect x="215" y="160" width="25" height="5" fill="#2b1d0e"/>
+      <ellipse cx="400" cy="165" rx="20" ry="6" fill="#2b1d0e"/>
+      <rect x="375" y="160" width="25" height="5" fill="#2b1d0e"/>
+      <!-- Дым -->
+      <ellipse cx="300" cy="50" rx="100" ry="20" fill="#5a4630" opacity="0.4"/>
+    </svg>
+    <div class="caption">Стилизованная композиция по мотивам панорамы Ф. А. Рубо «Бородинская битва», 1912</div>
+  </div>
+
+  <div class="memory-timeline">
+    <div class="mem-item">
+      <div class="year">1839</div>
+      <p>На главном кургане Бородинского поля установлен памятник-монумент.</p>
+    </div>
+    <div class="mem-item">
+      <div class="year">1912</div>
+      <p>К столетию сражения создана панорама Франца Рубо.</p>
+    </div>
+    <div class="mem-item">
+      <div class="year">1961</div>
+      <p>Основан государственный Бородинский музей-заповедник; день сражения отмечается как день воинской славы России.</p>
+    </div>
+  </div>
+
+  <blockquote>
+    «Славные и храбрые российские воины! Наконец вы при конце ваших трудов… Европа удивляется вашим подвигам».
+    <cite>— М. И. Кутузов, приказ армии, декабрь 1812 года</cite>
+  </blockquote>
+
+  <p>Победа достигается не эффектным жестом, а верным расчётом, терпением и бережением людей. В этом главный урок полководца, для которого цель дела была выше собственной славы, а цена жизни солдата — реальная величина, а не строка в ведомости.</p>
+</section>
+
+<!-- 06 СЛОВАРЬ -->
+<section id="glossary">
+  <h2><span class="num">06 ·</span>Словарь</h2>
+  <p class="lead">18 терминов кампании. Начните вводить слово — список отфильтруется сразу.</p>
+
+  <input type="text" class="search-box" id="dictSearch" placeholder="Поиск по словарю...">
+
+  <div class="dict-list" id="dictList">
+    <dl class="dict-item" data-term="авангард"><dt>Авангард</dt><dd>— передовая часть армии, действующая впереди главных сил; в 1812 году — корпус Мюрата, разбитый у Тарутина.</dd></dl>
+    <dl class="dict-item" data-term="арьергард"><dt>Арьергард</dt><dd>— войска, прикрывающие отход главных сил; в отходе 1812 года прославились бои арьергарда Багратиона и Милорадовича.</dd></dl>
+    <dl class="dict-item" data-term="батарея"><dt>Батарея</dt><dd>— артиллерийское подразделение или укреплённая позиция орудий; батарея Раевского — ключевое укрепление центра при Бородине.</dd></dl>
+    <dl class="dict-item" data-term="военный совет"><dt>Военный совет</dt><dd>— совещание высшего командования для принятия стратегического решения; совет в Филях 1 (13) сентября 1812 года.</dd></dl>
+    <dl class="dict-item" data-term="генеральное сражение"><dt>Генеральное сражение</dt><dd>— решающее сражение главных сил сторон; при Бородине Наполеон не смог уничтожить русскую армию.</dd></dl>
+    <dl class="dict-item" data-term="главнокомандующий"><dt>Главнокомандующий</dt><dd>— высший военный начальник армии; с 8 (20) августа 1812 года — М. И. Кутузов.</dd></dl>
+    <dl class="dict-item" data-term="континентальная блокада"><dt>Континентальная блокада</dt><dd>— запрет Наполеона на торговлю европейских стран с Англией; присоединение России к ней стало одной из причин войны.</dd></dl>
+    <dl class="dict-item" data-term="контрнаступление"><dt>Контрнаступление</dt><dd>— наступление оборонявшейся стороны; началось в октябре 1812 года после Тарутинского боя.</dd></dl>
+    <dl class="dict-item" data-term="манёвр"><dt>Манёвр</dt><dd>— передвижение войск для занятия выгодного положения; Тарутинский манёвр — скрытный фланговый переход к селу Тарутино.</dd></dl>
+    <dl class="dict-item" data-term="народное ополчение"><dt>Народное ополчение</dt><dd>— добровольческие вооружённые формирования из граждан; московское и смоленское ополчения пополнили армию Кутузова.</dd></dl>
+    <dl class="dict-item" data-term="партизанская война"><dt>Партизанская война</dt><dd>— боевые действия отрядов в тылу противника; отряды Давыдова, Сеславина, Дорохова, Фигнера и крестьянские отряды.</dd></dl>
+    <dl class="dict-item" data-term="редут"><dt>Редут</dt><dd>— земляное укрепление для круговой обороны; Шевардинский редут прикрывал подступы к Бородинскому полю.</dd></dl>
+    <dl class="dict-item" data-term="стратегия"><dt>Стратегия</dt><dd>— искусство ведения войны в целом: цели, направления и способы борьбы; стратегия Кутузова — сохранение армии и изматывание противника.</dd></dl>
+    <dl class="dict-item" data-term="тактика"><dt>Тактика</dt><dd>— искусство ведения боя; при Бородине русская тактика опиралась на укрепления и контратаки резервов.</dd></dl>
+    <dl class="dict-item" data-term="флеши"><dt>Флеши</dt><dd>— земляные укрепления в виде тупого угла, открытые с тыла; Багратионовы флеши на левом фланге русской позиции.</dd></dl>
+    <dl class="dict-item" data-term="фланг"><dt>Фланг</dt><dd>— боковая сторона расположения войск; удар Наполеона 26 августа был направлен на левый фланг русской армии.</dd></dl>
+    <dl class="dict-item" data-term="фураж"><dt>Фураж</dt><dd>— корм для лошадей; лишение французской армии фуража и продовольствия стало следствием Тарутинского манёвра и партизанской войны.</dd></dl>
+    <dl class="dict-item" data-term="скифский план"><dt>«Скифский план»</dt><dd>— стратегия заманивания противника вглубь страны с растягиванием коммуникаций и изматыванием сил; лёг в основу действий русского командования.</dd></dl>
+  </div>
+</section>
+
+<!-- 07 ВИКТОРИНА -->
+<section id="quiz">
+  <h2><span class="num">07 ·</span>Викторина «Поле 1812 года»</h2>
+  <p class="lead">Восемь вопросов по материалам лонгрида. Ответьте на все и нажмите «Проверить».</p>
+
+  <form id="quizForm">
+    <div class="quiz-q" data-correct="1">
+      <h4>1. Когда произошло Бородинское сражение?</h4>
+      <label><input type="radio" name="q1" value="0"> 12 (24) июня 1812 года</label>
+      <label><input type="radio" name="q1" value="1"> 26 августа (7 сентября) 1812 года</label>
+      <label><input type="radio" name="q1" value="2"> 1 (13) сентября 1812 года</label>
+      <label><input type="radio" name="q1" value="3"> 6 (18) октября 1812 года</label>
+      <div class="quiz-feedback">26 августа по старому стилю / 7 сентября по новому стилю 1812 года.</div>
+    </div>
+
+    <div class="quiz-q" data-correct="2">
+      <h4>2. Как назывались земляные укрепления на левом фланге русской позиции?</h4>
+      <label><input type="radio" name="q2" value="0"> Шевардинский редут</label>
+      <label><input type="radio" name="q2" value="1"> Дрисский лагерь</label>
+      <label><input type="radio" name="q2" value="2"> Багратионовы флеши</label>
+      <label><input type="radio" name="q2" value="3"> Курганная высота</label>
+      <div class="quiz-feedback">Багратионовы флеши — земляные укрепления на левом фланге русской позиции.</div>
+    </div>
+
+    <div class="quiz-q" data-correct="1">
+      <h4>3. Где и когда было принято решение оставить Москву?</h4>
+      <label><input type="radio" name="q3" value="0"> В Царёво-Займище, 17 августа 1812 года</label>
+      <label><input type="radio" name="q3" value="1"> На совете в Филях, 1 (13) сентября 1812 года</label>
+      <label><input type="radio" name="q3" value="2"> В Тарутинском лагере, 20 сентября 1812 года</label>
+      <label><input type="radio" name="q3" value="3"> В Сморгони, 23 ноября 1812 года</label>
+      <div class="quiz-feedback">Решение оставить Москву принято на совете в Филях 1 (13) сентября 1812 года.</div>
+    </div>
+
+    <div class="quiz-q" data-correct="0">
+      <h4>4. Что дал Тарутинский манёвр?</h4>
+      <label><input type="radio" name="q4" value="0"> Выход на Калужскую дорогу, отдых, пополнения и прикрытие южных губерний</label>
+      <label><input type="radio" name="q4" value="1"> Немедленное генеральное сражение с Наполеоном</label>
+      <label><input type="radio" name="q4" value="2"> Отступление армии на Рязанскую дорогу к востоку</label>
+      <label><input type="radio" name="q4" value="3"> Переправу остатков армии Наполеона</label>
+      <div class="quiz-feedback">Манёвр вывел армию на Калужскую дорогу, дал отдых и пополнения, прикрыл южные губернии и нарушил снабжение французов.</div>
+    </div>
+
+    <div class="quiz-q" data-correct="2">
+      <h4>5. Кому принадлежала идея армейских партизанских отрядов?</h4>
+      <label><input type="radio" name="q5" value="0"> М. Б. Барклаю-де-Толли</label>
+      <label><input type="radio" name="q5" value="1"> А. П. Ермолову</label>
+      <label><input type="radio" name="q5" value="2"> Д. В. Давыдову</label>
+      <label><input type="radio" name="q5" value="3"> М. И. Платову</label>
+      <div class="quiz-feedback">Идея армейских партизанских отрядов принадлежала Д. В. Давыдову и была поддержана Кутузовым.</div>
+    </div>
+
+    <div class="quiz-q" data-correct="0">
+      <h4>6. Как Наполеон оценил Бородинское сражение?</h4>
+      <label><input type="radio" name="q6" value="0"> «Русские стяжали право быть непобедимыми»</label>
+      <label><input type="radio" name="q6" value="1"> «Лёгкая победа, открывшая дорогу на Москву»</label>
+      <label><input type="radio" name="q6" value="2"> «Гвардия решила исход дня»</label>
+      <label><input type="radio" name="q6" value="3"> «Сражение, которого не было»</label>
+      <div class="quiz-feedback">Наполеон признал стойкость русской армии: «русские стяжали право быть непобедимыми».</div>
+    </div>
+
+    <div class="quiz-q" data-correct="0">
+      <h4>7. Какую награду Кутузов получил в декабре 1812 года?</h4>
+      <label><input type="radio" name="q7" value="0"> Орден Святого Георгия 1-й степени</label>
+      <label><input type="radio" name="q7" value="1"> Титул графа Российской империи</label>
+      <label><input type="radio" name="q7" value="2"> Орден Святого Андрея Первозванного с алмазами</label>
+      <label><input type="radio" name="q7" value="3"> Золотую шпагу «За храбрость»</label>
+      <div class="quiz-feedback">В декабре 1812 года Кутузов получил орден Святого Георгия 1-й степени, став первым полным георгиевским кавалером.</div>
+    </div>
+
+    <div class="quiz-q" data-correct="2">
+      <h4>8. Кто из историков считал образ «спасителя Отечества» во многом созданным пропагандой?</h4>
+      <label><input type="radio" name="q8" value="0"> П. А. Жилин</label>
+      <label><input type="radio" name="q8" value="1"> Е. В. Тарле</label>
+      <label><input type="radio" name="q8" value="2"> Н. А. Троицкий</label>
+      <label><input type="radio" name="q8" value="3"> В. М. Безотосный</label>
+      <div class="quiz-feedback">Н. А. Троицкий критически оценивал официальную традицию образа «спасителя Отечества».</div>
+    </div>
+
+    <div class="quiz-actions">
+      <button type="button" class="btn" onclick="checkQuiz()">Проверить ответы</button>
+      <button type="button" class="btn secondary" onclick="resetQuiz()">Сбросить</button>
+      <button type="button" class="btn secondary" onclick="window.print()">Печать / PDF</button>
+    </div>
+
+    <div class="quiz-score" id="quizScore"></div>
+  </form>
+</section>
+
+</div>
+
+<!-- ФУТЕР -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3>О проекте</h3>
+        <ul>
+          <li><strong>Автор:</strong> Мухаир Даниил Евгеньевич, 9 «А» класс</li>
+          <li><strong>Руководитель:</strong> Самойлова Наталья Евгеньевна, учитель истории</li>
+          <li>МБОУ «СОШ № 18», г. Ухта, 2026</li>
+          <li>Предмет: история России · вид проекта: информационный</li>
+          <li>Продукт: интерактивный лонгрид, словарь, викторина</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Источники</h3>
+        <ul>
+          <li>1812 год. Бородинская панорама: альбом. М., 1982.</li>
+          <li>Жилин П. А. Гибель наполеоновской армии в России. М., 1974.</li>
+          <li>Кутузов М. И. Сборник документов: в 5 т. М., 1954.</li>
+          <li>Отечественная война 1812 года: энциклопедия. М., 2004.</li>
+          <li>Тарле Е. В. Нашествие Наполеона на Россию. М., 1992.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      Один HTML-файл · без интернета и установок · работает в современных браузерах и IE8+<br>
+      «Война есть наука, а не ремесло» — М. И. Кутузов
+    </div>
+  </div>
+</footer>
+
+<script>
+// Хроника - раскрытие
+document.querySelectorAll('.tl-head').forEach(function(h) {
+  h.addEventListener('click', function() {
+    this.parentElement.classList.toggle('open');
+  });
+});
+
+// Карта сражения - точки
+var mapData = {
+  '1': {t: 'Шевардинский редут', d: 'Передовой редут, бой 24 августа. Прикрыл подступы к основному полю и задержал противника на сутки.'},
+  '2': {t: 'Багратионовы флеши', d: 'Земляные укрепления на левом фланге. 8 раз переходили из рук в руки, здесь был смертельно ранен князь Багратион.'},
+  '3': {t: 'Батарея Раевского', d: 'Курганная батарея в центре позиции. Ключевой узел обороны, выдержавший главный удар французов.'},
+  '4': {t: 'Село Бородино', d: 'Правый фланг русской армии, опирался на реку Колочу. Здесь оборонялась 1-я армия Барклая-де-Толли.'},
+  '5': {t: 'Утицы', d: 'Левый край позиции у Старой Смоленской дороги. Бои в лесистой местности, трудные для атакующих.'},
+  '6': {t: 'Резервы Кутузова', d: 'За позицией — свежие силы, которые полководец берег для критического момента.'},
+  '7': {t: 'Правый фланг / Горки', d: 'Ставка Кутузова у села Горки. Отсюда он управлял сражением.'}
+};
+document.querySelectorAll('.map-point').forEach(function(p) {
+  p.addEventListener('click', function() {
+    var id = this.getAttribute('data-id');
+    var info = mapData[id];
+    document.getElementById('mapInfo').innerHTML = '<h4>' + info.t + '</h4><p>' + info.d + '</p>';
+  });
+});
+
+// Эпизоды сражения
+document.querySelectorAll('.ep-tab').forEach(function(t) {
+  t.addEventListener('click', function() {
+    var ep = this.getAttribute('data-ep');
+    document.querySelectorAll('.ep-tab').forEach(function(x) { x.classList.remove('active'); });
+    document.querySelectorAll('.ep-body').forEach(function(x) { x.classList.remove('active'); });
+    this.classList.add('active');
+    document.querySelector('.ep-body[data-ep="' + ep + '"]').classList.add('active');
+  });
+});
+
+// Оценки - вкладки
+document.querySelectorAll('.voice-tab').forEach(function(t) {
+  t.addEventListener('click', function() {
+    var v = this.getAttribute('data-voice');
+    document.querySelectorAll('.voice-tab').forEach(function(x) { x.classList.remove('active'); });
+    document.querySelectorAll('.voice-panel').forEach(function(x) { x.classList.remove('active'); });
+    this.classList.add('active');
+    document.querySelector('.voice-panel[data-voice="' + v + '"]').classList.add('active');
+  });
+});
+
+// Словарь - поиск
+document.getElementById('dictSearch').addEventListener('input', function() {
+  var q = this.value.toLowerCase().trim();
+  document.querySelectorAll('.dict-item').forEach(function(item) {
+    var text = item.textContent.toLowerCase();
+    item.style.display = text.indexOf(q) !== -1 ? '' : 'none';
+  });
+});
+
+// Викторина
+function checkQuiz() {
+  var score = 0;
+  var total = document.querySelectorAll('.quiz-q').length;
+  document.querySelectorAll('.quiz-q').forEach(function(q) {
+    var correct = q.getAttribute('data-correct');
+    var checked = q.querySelector('input[type="radio"]:checked');
+    q.classList.remove('correct', 'wrong');
+    if (checked) {
+      if (checked.value === correct) {
+        score++;
+        q.classList.add('correct');
+      } else {
+        q.classList.add('wrong');
+      }
+    }
+    q.querySelector('.quiz-feedback').classList.add('show');
+  });
+  var scoreEl = document.getElementById('quizScore');
+  scoreEl.innerHTML = '<strong>Ваш результат: ' + score + ' из ' + total + '</strong><br>' +
+    (score === total ? 'Отлично! Вы настоящий знаток кампании 1812 года.' :
+     score >= 6 ? 'Хороший результат. Перечитайте разделы, где были ошибки.' :
+     'Стоит вернуться к материалам лонгрида.');
+  scoreEl.classList.add('show');
+}
+
+function resetQuiz() {
+  document.querySelectorAll('.quiz-q').forEach(function(q) {
+    q.classList.remove('correct', 'wrong');
+    q.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
+    q.querySelector('.quiz-feedback').classList.remove('show');
+  });
+  document.getElementById('quizScore').classList.remove('show');
+}
+
+// Плавная прокрутка
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
